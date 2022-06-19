@@ -7,26 +7,23 @@ import sys
 import numpy as np
 import pandas as pd
 
-import lmdb
 from tqdm import tqdm
 
-df = pd.read_excel('./ABIDE-select.xlsx', sheet_name='Sheet1')
+df = pd.read_excel('./normals/ACPI.xlsx', sheet_name='Sheet1')
 for index, row in tqdm(df.iterrows()):
-    SITE_ID = str(row['SITE_ID'])
-    SUB_ID = str(row['SUB_ID'])
-    age = float(row['AGE_AT_SCAN'])
-    gender = int(row['SEX'])
+    SITE_ID = str(row['site_name'])
+    SUB_ID = str(row['pid'])
+    age = float(row['age'])
+    gender = int(row['gender'])
 
-    diction = {'CALTECH' : 'Caltech'}
+    # diction = {'CALTECH' : 'Caltech'}
+    # site = diction[SITE_ID]
+    site = SITE_ID
 
-    if SITE_ID == 'CALTECH':
+    img_dir = '/data/dataset/ACPI/' + site
+    pid = 'sub-' + SUB_ID.zfill(7)
 
-        site = diction[SITE_ID]
+    img_path = os.path.join(img_dir, pid, 'ses-1', 'anat')  # , pid + '_T1w.nii.gz'
 
-        img_dir = '/data/dataset/ABIDE/' + site
-        pid = 'sub-' + SUB_ID.zfill(7)
-
-        img_path = os.path.join(img_dir, pid, 'anat', pid + '_T1w.nii.gz')
-
-        if not os.path.exists(img_path):
-            print(SUB_ID)
+    if not os.path.exists(img_path):
+        print(SUB_ID)
